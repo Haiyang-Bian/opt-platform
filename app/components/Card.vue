@@ -1,19 +1,17 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
-	<div class="grid grid-cols-12 gap-4">
-		<div class="col-span-12 flex items-center">
+	<div class="w-full h-full flex flex-col justify-center items-center">
+		<div class="w-full flex items-center">
 			<div class="h-10 w-10">
 				<img src="/images/icon.png"  alt=""/>
 			</div>
-			<div class="layout-container col-span-12 h-1/6 flex items-center ">
+			<div class="layout-container flex items-center ">
 				<slot name="header" />
 			</div>
 		</div>
-
-		<div class="col-span-12 flex items-center justify-center">
+		<div class="w-full flex-1 flex items-center justify-center">
 			<slot />
 		</div>
 	</div>
@@ -24,6 +22,7 @@
 .layout-container {
 	/* 基础尺寸：占满视口高度 */
 	width: 100%;
+	height: 50%;
 	/* 内部背景：左上角→右下角渐变（你要的渐变方向） */
 	background: linear-gradient(to right, rgba(240, 249, 255, 0.2), rgba(14, 165, 233, 0.2));
 	/* 相对定位：让伪元素边框层基于此定位 */

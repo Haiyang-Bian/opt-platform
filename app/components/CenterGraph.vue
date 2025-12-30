@@ -1,45 +1,33 @@
 <template>
-	<div class="system-diagram">
-		<!-- 分区标题 -->
-		<div class="section-title">
-			<div class="electric-title">电</div>
-			<div class="heat-gas-title">热&气</div>
-		</div>
-
-		<!-- Vue Flow 核心容器 -->
-		<VueFlow
-			:nodes="nodes"
-			:edges="edges"
-			class="flow-'custom-container'"
-			fit-view-on-init
-			:node-types="nodeTypes"
-			:draggable="false"
-			:zoom-on-scroll="false"
-			:edge-label-position="'middle'"
-			:connection-line-options="{
-				style: {
-					'z-index': 10,
-				}
-			}"
-		>
-			<Controls :show-minimap="false" :show-zoom="false" />
-		</VueFlow>
+	<div ref="canvas" class="w-full flex-1 flex flex-col justify-center items-center gap-3">
+		<client-only>
+			<VueFlow
+				:nodes="nodes"
+				:edges="edges"
+				fit-view-on-init
+				:node-types="nodeTypes"
+				:draggable="false"
+				:zoom-on-scroll="false"
+				:nodes-draggable="false"
+				:edges-focusable="false"
+				:nodesConnectable="false"
+				:pan-on-drag="false"
+			/>
+		</client-only>
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { VueFlow, useVueFlow } from '@vue-flow/core';
-import CustomNode from './graph/CustomNode.vue';
 import '@vue-flow/core/dist/style.css';
-import '@vue-flow/controls/dist/style.css';
-import {Controls} from "@vue-flow/controls";
 import ContainerNode from "~/components/graph/ContainerNode.vue";
+import CustomNode from './graph/CustomNode.vue';
 
 // 注册自定义节点类型
 const nodeTypes = {
-	custom: CustomNode,
-	'custom-container': ContainerNode,
+	custom: markRaw(CustomNode),
+	'custom-container': markRaw(ContainerNode),
 };
 
 // 节点配置（坐标/内容/样式）
@@ -243,48 +231,39 @@ const edges = ref([
 // 初始化视图适配
 const { fitView } = useVueFlow();
 setTimeout(() => fitView(), 100);
+
+const canvas = ref(null);
+const observer = ref<ResizeObserver | null>(null);
+const firstWH = ref({ width: 0, height: 0 });
+const { updateNode } = useVueFlow()
+
+
+onMounted(() => {
+	observer.value = new ResizeObserver((entries) => {
+		// entries[0] 就是你观察的那个元素
+		if (entries.length > 0 && entries[0]) {
+			const rect = entries[0].contentRect
+
+			if (firstWH.value.width !== 0 && firstWH.value.height !== 0) {
+				for (let node of nodes.value) {
+					node.position.x *= rect.width / firstWH.value.width
+					node.position.y *= rect.height / firstWH.value.height
+
+					updateNode(node.id, node)
+				}
+			}
+
+			firstWH.value.width = rect.width
+			firstWH.value.height = rect.height
+		}
+	})
+
+	observer.value?.observe(canvas.value!)
+})
+onUnmounted(() => {
+	observer.value?.disconnect()
+})
 </script>
 
 <style scoped>
-.system-diagram {
-	width: 100%;
-	height: 600px;
-	border-radius: 8px;
-	padding: 16px;
-}
-
-/* 分区标题样式 */
-.section-title {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 16px;
-}
-.electric-title, .heat-gas-title {
-	color: #bae6fd;
-	font-size: 18px;
-	font-weight: bold;
-	padding: 8px 16px;
-	background: rgba(14, 165, 233, 0.2);
-	border-radius: 4px;
-}
-.electric-title { margin-left: 80px; }
-.heat-gas-title { margin-right: 80px; }
-
-/* Flow容器样式 */
-.flow-container {
-	width: 100%;
-	height: calc(100% - 60px);
-	background: #567cd7;
-}
-
-/* 覆盖vue-flow默认样式 */
-:deep(.vue-flow__edge-label) {
-	background: rgba(0, 0, 0, 0.5);
-	padding: 2px 6px;
-	border-radius: 4px;
-}
-:deep(.vue-flow__edge) {
-	z-index: 999;
-}
-:deep(.vue-flow__controls) { display: none; } /* 隐藏默认控制栏 */
 </style>

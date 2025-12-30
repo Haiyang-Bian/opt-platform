@@ -1,15 +1,7 @@
 <template>
-	<VChart :option="option" autoresize :style="{ height }" />
+	<VChart :option="option" autoresize style="height: 100%" />
 </template>
 <script setup lang="ts">
-import { use } from 'echarts/core'
-import { PieChart } from 'echarts/charts'
-import { TooltipComponent, LegendComponent } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
-use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer])
-
-const props = defineProps<{ height: string }>()
-
 const option = ref({
 	tooltip: { trigger: 'item' },
 	legend: { bottom: 0, textStyle: { color: '#ccc' } },

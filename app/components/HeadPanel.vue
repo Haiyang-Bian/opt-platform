@@ -10,43 +10,13 @@ const items = [
 </script>
 
 <template>
-	<div
-		class="w-full grid grid-cols-6 gap-3"
-	>
+	<div class="w-full grid grid-cols-6 gap-3">
 		<StatCard
-			:title="items[0]!.title"
-			:value="items[0]!.value"
-			:unit="items[0]!.subtitle"
-			class="col-span-2"
-		/>
-		<StatCard
-			:title="items[1]!.title"
-			:value="items[1]!.value"
-			:unit="items[1]!.subtitle"
-			class="col-span-2"
-		/>
-		<StatCard
-			:title="items[2]!.title"
-			:value="items[2]!.value"
-			:unit="items[2]!.subtitle"
-			class="col-span-2"
-		/>
-		<StatCard
-			:title="items[3]!.title"
-			:value="items[3]!.value"
-			:unit="items[3]!.subtitle"
-			class="col-span-2"
-		/>
-		<StatCard
-			:title="items[4]!.title"
-			:value="items[4]!.value"
-			:unit="items[4]!.subtitle"
-			class="col-span-2"
-		/>
-		<StatCard
-			:title="items[5]!.title"
-			:value="items[5]!.value"
-			:unit="items[5]!.subtitle"
+			v-for="item in items"
+			:key="item.title"
+			:title="item.title"
+			:value="item.value"
+			:unit="item.subtitle"
 			class="col-span-2"
 		/>
 	</div>

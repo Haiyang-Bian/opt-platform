@@ -2,7 +2,7 @@
 	<VChart
 		autoresize
 		:option="option"
-		:style="{ height }"
+		style="height: 100%"
 	/>
 </template>
 <script setup lang="ts">
@@ -10,16 +10,8 @@ import type { MapSeriesOption } from 'echarts/charts'
 import type { GeoComponentOption } from 'echarts/components'
 import type { ComposeOption } from 'echarts/core'
 import * as echarts from "echarts/core"
-import {defineComponent} from "vue";
 
 type ECOption = ComposeOption<GeoComponentOption | MapSeriesOption>
-
-const props = defineProps({
-	height: {
-		type: String,
-		default: '400px'
-	}
-})
 
 const option = ref<ECOption>()
 

@@ -10,24 +10,17 @@
 	<Handle type="source" id="outlet2" :position="Position.Bottom"/>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {Handle, Position} from "@vue-flow/core";
+import type {INodeData} from "~/types/global";
 
-defineProps({
-	id: {
-		type: String,
-		required: true,
-	},
-	data: {
-		type: Object,
-		required: true,
-		default: {
-			label: { type: String, required: true }, // 节点名称
-			icon: { type: String, default: '⚡' },   // 节点图标（可替换为SVG）
-			value: { type: String, default: '+++' },    // 数值标注（如0 kW）
-		},
-	}
-});
+defineOptions({
+	inheritAttrs: false
+})
+defineProps<{
+	id: string;
+	data: INodeData;
+}>();
 </script>
 
 <style scoped>

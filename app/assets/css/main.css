@@ -40,3 +40,7 @@
     --ui-primary: rgb(67, 208, 174);
     --color-slate-900: rgba(0, 0, 0, 0);
 }
+
+body::-webkit-scrollbar {
+    display: none;
+}

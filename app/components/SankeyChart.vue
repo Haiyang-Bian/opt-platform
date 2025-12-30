@@ -1,14 +1,7 @@
 <template>
-	<VChart autoresize :option="option" :style="{ height }" />
+	<VChart autoresize :option="option" style="height: 100%" />
 </template>
 <script setup lang="ts">
-const props = defineProps({
-	height: {
-		type: String,
-		default: '400px'
-	}
-})
-
 const option = computed(() => ({
 	tooltip: { trigger: 'item', triggerOn: 'mousemove' },
 	series: [

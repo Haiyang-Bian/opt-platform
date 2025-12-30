@@ -1,15 +1,7 @@
 <template>
-	<VChart :option="option" autoresize :style="{ height }" />
+	<VChart :option="option" autoresize style="height: 100%" />
 </template>
 <script setup lang="ts">
-import { use } from 'echarts/core'
-import { LineChart } from 'echarts/charts'
-import { GridComponent, TooltipComponent } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
-use([LineChart, GridComponent, TooltipComponent, CanvasRenderer])
-
-const props = defineProps<{ height: string }>()
-
 const option = ref({
 	tooltip: { trigger: 'axis' },
 	grid: { left: 40, right: 20, top: 20, bottom: 30 },
